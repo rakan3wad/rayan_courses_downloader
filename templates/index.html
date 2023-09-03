@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rayan's Course Downloaderor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<div class="l-design-width card">
+    <h1>Rayan's Course Downloaderor</h1>
+
+    <form id="extract-form" action="/" method="post">
+        <div class="input">
+            <textarea id="code_input" name="code_input" class="input__field" rows="4" required></textarea>
+            <label for="code_input" class="input__label">Enter the code containing URLs:</label>
+        </div>
+        <div class="button-group" id="button-container">
+            <button type="button" id="extract-button">Extract URL</button>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('extract-form');
+            const button = document.getElementById('extract-button');
+            const codeInput = document.getElementById('code_input');
+
+            button.addEventListener('click', function() {
+                fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'code_input': codeInput.value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url !== "URL not found") {
+                        window.open(data.url, '_blank');
+                    } else {
+                        alert("URL not found");
+                    }
+                    // Clear the text area
+                    codeInput.value = '';
+                });
+            });
+        });
+    </script>
+
+</div>
+
+</body>
+</html>
